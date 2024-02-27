@@ -2,7 +2,7 @@
 """
 Main for the Nist-ELF
 
-Authors: PE Trevisanutto, G. Teobaldi.
+Authors: PE Trevisanutto
 """
 import classutility as cu
 import class_nist as Nist
