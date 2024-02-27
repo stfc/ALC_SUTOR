@@ -3,7 +3,7 @@
 Created on Fri Jul 21 11:32:35 2023
 
 Class utility
-Authors: P.E. Trevisanutto, G. Teobaldi
+Authors: P.E. Trevisanutto
 """
 import matplotlib.pyplot as plt
 import numpy as np
