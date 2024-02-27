@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Jul 26 11:42:14 2023
-Sutor Project 
+ALC_Sutor Project 
 Main for the fitting procedure with Lorentians
 Authors: PE Trevisanutto.
 """
