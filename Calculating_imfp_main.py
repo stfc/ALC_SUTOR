@@ -5,7 +5,7 @@ Created on Wed Jul 26 11:04:47 2023
 Main for the Inelastic Mean Free Path calculations.
 Command lines parameters passed: ELF file, Fermi energy EF, Band gap Eb, and Max Kinetic energy Tmax
 
-Authors: P. E. Trevisanutto, G. Teobaldi.
+Authors: P. E. Trevisanutto
 """
 import numpy as np
 import classutility as cu
