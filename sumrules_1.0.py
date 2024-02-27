@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Sutor Project
+ALC_Sutor Project
 Script for the Sum rule calculations.
-Authors: P.E. Trevisanutto, G. Teobaldi.
+Authors: P.E. Trevisanutto.
 """
 
 import sys
