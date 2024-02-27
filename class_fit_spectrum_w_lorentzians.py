@@ -5,7 +5,7 @@ Sutor Project
 Class for fitting the ELF spectrum with lorentians.
 Import lmfit model classes
 
-Authors: P.E. Trevisanutto, G. Teobaldi.
+Authors: P.E. Trevisanutto,
 
 """
 
