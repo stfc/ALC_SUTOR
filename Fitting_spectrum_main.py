@@ -3,7 +3,7 @@
 Created on Wed Jul 26 11:42:14 2023
 Sutor Project 
 Main for the fitting procedure with Lorentians
-Authors: PE Trevisanutto, G. Teobaldi.
+Authors: PE Trevisanutto.
 """
 import classutility as cu
 import class_fit_spectrum_w_lorentzians as fit
