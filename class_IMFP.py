@@ -2,7 +2,7 @@
 """
 Created on Tue May 30 11:07:59 2023
 
-Sutor Project
+ALC_Sutor Project
 Class for calculations of Inelastic Mean Free Path and Cumulative Probabilities for the IMFP 
 at different initial kinetic energies.
 
