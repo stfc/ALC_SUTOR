@@ -3,7 +3,7 @@
 
 Class for interpreting the Nist f1 and f2 files to calculate the ELF after 100 eV.
 
-P. E. Trevisanutto, G. Teobaldi STFC-UKRI
+P. E. Trevisanutto
 """
 
 import matplotlib.pyplot as plt
