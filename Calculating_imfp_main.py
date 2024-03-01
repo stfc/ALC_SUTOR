@@ -2,6 +2,7 @@
 """
 Created on Wed Jul 26 11:04:47 2023
 
+ALC_SUTOR 
 Main for the Inelastic Mean Free Path calculations.
 Command lines parameters passed: ELF file, Fermi energy EF, Band gap Eb, and Max Kinetic energy Tmax
 
