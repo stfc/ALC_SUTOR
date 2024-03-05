@@ -1,5 +1,8 @@
 # ALC_sutor
 
+## About the code
+ALC_SUTOR is an open-source software that allows computing:
+
 
 
 ## Getting started
