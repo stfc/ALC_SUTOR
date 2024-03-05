@@ -1,7 +1,7 @@
 # ALC_sutor
 
 ## About the code
-ALC_SUTOR is an open-source software that allows computing:
+ALC_SUTOR project is an open-source software that allows computing:
 * Generates the Electron Loss Function (ELF) from Nist datasets https://physics.nist.gov/PhysRefData/FFast/html/form.html up to 100keV.
 * Allows for merging Nist ELF with the Linear Response TD-DFT ELF
 * Fits the Numerical ELF with Lorentzians and uses the Drude approximation to extend the ELF in momentum space
@@ -12,7 +12,7 @@ The ALC does not fully guarantee the code is free of errors and assumes no legal
 
 ## Contributors
  ### Original author
- Paolo Emilio Trevisanutto (SCD, STFC)
+   Paolo Emilio Trevisanutto (SCD, STFC)
 
  ### Scientific and project support
    Gilberto Teobaldi (SCD, STFC)
