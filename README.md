@@ -11,10 +11,10 @@ ALC_SUTOR is an open-source software that allows computing:
 The ALC does not fully guarantee the code is free of errors and assumes no legal responsibility for any incorrect outcome or loss of data.
 
 ## Contributors
- # Original author
+ - Original author
  Paolo Emilio Trevisanutto (SCD, STFC)
 
-# Scientific and project support
+ - Scientific and project support
    Gilberto Teobaldi (SCD, STFC)
 ## Getting started
 
