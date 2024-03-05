@@ -5,7 +5,7 @@ Python Suite for Monte-Carlo scattering calculations starting from Energy Loss F
 ALC_SUTOR project is an open-source software that allows computing:
 * Generates the Electron Loss Function (ELF) from Nist datasets https://physics.nist.gov/PhysRefData/FFast/html/form.html up to 100keV.
 * Allows for merging Nist ELF with the Linear Response TD-DFT ELF
-* Fits the Numerical ELF with Lorentzians and uses the Drude approximation to extend the ELF in momentum space
+* Fits the Numerical ELF with Lorentzians and uses the Drude approximation to extend the ELF to finite momentum space
 * Calculates the Inelastic Mean Free Path and the Cumulative probabilities for the Monte Carlo calculations
 
 ## Disclaimer
