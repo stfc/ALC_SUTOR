@@ -102,6 +102,12 @@ class utilities():
 
         plt.title('Initial guess')
         plt.show()
+
+# ----------------------------------------------------------------------------
+
+    def get_Avogadro(self):
+
+        return self._avo 
 # ----------------------------------------------------------------------------
 
     def resultbestfitplot(self, x, y, init, result,name):
@@ -126,18 +132,6 @@ class utilities():
     def __init__(self, Volume=5681.2801):
 
         self.Vol = Volume
-# ----------------------------------------------------------------------------
-
-    def get_Avogadro(self):
-
-        return self.__N_avo
-# ----------------------------------------------------------------------------
-    def get_hc(self):
-        return self.__hc
-    
-    # ----------------------------------------------------------------------------
-    def get_henke(self):
-            return self.__C_henke
 # ----------------------------------------------------------------------------
 
     def index_of(self, arrval, value):
@@ -177,7 +171,7 @@ class utilities():
         Amp =[]
         gamma =[]
         Inte = []
-        print (Guessing)
+       
         if (Guessing==True):
             print ("Looking for the peaks")
             peaks, properties = find_peaks( yData,width=0.000000001,height=height)
@@ -329,7 +323,7 @@ class utilities():
         # rho.append(self.hc/omg[i])
         omg_np = self.From_str2float(omg)
         rho_np = np.reciprocal(omg_np)
-        rho_np = self.get_hc()*rho_np
+        rho_np = self.hc*rho_np
 
         return(rho_np)
 # --------------------------------------------
