@@ -1,72 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Class_nist
 
 Class for interpreting the Nist f1 and f2 files to calculate the ELF after 100 eV.
 
-ALC_SUTOR project
-
-BSD 3-Clause License
-
- 
-
-Copyright (c) 2024, Ada Lovelace Centre, Science and Technology Facilities Council, part of the UKRI (UK).
-
-Author:             Paolo Emilio Trevisanutto.
-
- 
-
-All rights reserved.
-
- 
-
-Redistribution and use in source and binary forms, with or without
-
-modification, are permitted provided that the following conditions are met:
-
- 
-
-1. Redistributions of source code must retain the above copyright notice, this
-
-   list of conditions and the following disclaimer.
-
- 
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-
-   this list of conditions and the following disclaimer in the documentation
-
-   and/or other materials provided with the distribution.
-
- 
-
-3. Neither the name of the copyright holder nor the names of its
-
-   contributors may be used to endorse or promote products derived from
-
-   this software without specific prior written permission.
-
- 
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+P. E. Trevisanutto, G. Teobaldi STFC-UKRI
 """
 
 import matplotlib.pyplot as plt
@@ -118,12 +55,17 @@ class Nist_interpolation():
                 values = [s for s in line.split()]
                 
                 try: 
+                    
                     if iteration == 1 :
                         N_species = int(values[0])
+                        print ("Species: " + str(N_species),flush = True)
                         dens_mix = float(values[1])
                         if (values[2] != 0):
                             self.File_TDDFT = values[2]
+                            print ("TD-DFT file: "+ self.File_TDDFT)
+                        
                     else:
+                        
                         atom.append(values[0])
                         Number.append(float(values[1]))
                         N_atom.append(float(values[2]))
@@ -137,18 +79,18 @@ class Nist_interpolation():
                     exit()
                     
                 else:
-                   
-                    print ("Species: " + str(N_species),flush = True)
-                    print ("Number of atoms in the supercell: " +str(Number),flush = True)
-                    print ("Atomic numbers: "+str(N_atom),flush = True)
-                    print(" Densities: " +str(dens),flush = True)
-                    print ("Files: " + str(files),flush = True)
+                    if (iteration > 1):
+                    
+                        print ("Number of atoms in the supercell: " +str(Number),flush = True)
+                        print ("Atomic number: "+str(N_atom),flush = True)
+                        print (" Densities: " +str(dens),flush = True)
+                        print ("Files: " + str(files),flush = True)
         
         
         for i in range(N_species):
             denominator = N_atom[i]*Number[i] +denominator
             
-        self.N_mix= dens_mix*self.ut.N_avo/denominator
+        self.N_mix= dens_mix*self.ut.get_Avogadro()/denominator
 
         return N_species, atom, Number, N_atom, dens, files   
             
@@ -368,8 +310,8 @@ class Nist_interpolation():
         for i in range(len(omega)):
         
         
-            n_refr.append(1.0-((rho_np[i]*self.N_mix/(2*pi))*(1/(self.ut.C_henke*pi*omg_np[i]))*f1_tot[i]))
-            k_ext.append((rho_np[i]*self.N_mix/(2*pi))*(1/(self.ut.C_henke*pi*omg_np[i]))*f2_tot[i])
+            n_refr.append(1.0-((rho_np[i]*self.N_mix/(2*pi))*(1/(self.ut.get_henke()*pi*omg_np[i]))*f1_tot[i]))
+            k_ext.append((rho_np[i]*self.N_mix/(2*pi))*(1/(self.ut.get_henke()*pi*omg_np[i]))*f2_tot[i])
         
         n = self.ut.From_str2float(n_refr)
         k =self.ut.From_str2float(k_ext)

@@ -1,4 +1,2 @@
-3 5.01 CsPbBr.plot_eps_tdlda_100eV.dat
-Cs 4 132.9054 1.8700 Cs_f1_f2_Nist.txt
-Br 12 79.90400 3.1100 Br_f1_f2_Nist.txt
-Pb 4 207.2000 11.330 Pb_f1_f2_Nist.txt
+1 2.31 ELF_Si.dat
+Si 2 14 2.31 Si_f1_f2_Nist.txt
