@@ -1,70 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jul 21 11:32:35 2023
-Sutor Project
+ALC Sutor Project
 Class utility
+ class with several plotting , maths and lmfit methods
 
-BSD 3-Clause License
-
- 
-
-Copyright (c) 2024, Ada Lovelace Centre, Science and Technology Facilities Council, part of the UKRI (UK).
-
-Author:             Paolo Emilio Trevisanutto.
-
- 
-
-All rights reserved.
-
- 
-
-Redistribution and use in source and binary forms, with or without
-
-modification, are permitted provided that the following conditions are met:
-
- 
-
-1. Redistributions of source code must retain the above copyright notice, this
-
-   list of conditions and the following disclaimer.
-
- 
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-
-   this list of conditions and the following disclaimer in the documentation
-
-   and/or other materials provided with the distribution.
-
- 
-
-3. Neither the name of the copyright holder nor the names of its
-
-   contributors may be used to endorse or promote products derived from
-
-   this software without specific prior written permission.
-
- 
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 import matplotlib.pyplot as plt
 import numpy as np
@@ -75,6 +15,7 @@ from scipy.special import expit
 from scipy.signal import find_peaks
 
 class utilities():
+ 
 
     __hb2m = 7.615  # (hb*c)^2/0.5 MeV=[eV*Angs]^2
     __ao = 0.529  # Borh radius in Angs
@@ -90,8 +31,17 @@ class utilities():
     # hc[eV*cm]
     __hc = 12.398*10**(-5)
     #Vol= 5681.2801
-
+# ----------------------------------------------------------------------------
     def plotting_elf(self, xData, yData, peaks):
+        """
+          method that produces the ELF plot 
+           Args:
+              xData (float): Energy (eV)
+              yData (float): ELF 
+
+           Returns:
+              plot
+       """
 
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
@@ -102,14 +52,8 @@ class utilities():
 
         plt.title('Initial guess')
         plt.show()
-
 # ----------------------------------------------------------------------------
-
-    def get_Avogadro(self):
-
-        return self._avo 
-# ----------------------------------------------------------------------------
-
+#not used
     def resultbestfitplot(self, x, y, init, result,name):
 
         fig = plt.figure()
@@ -134,8 +78,42 @@ class utilities():
         self.Vol = Volume
 # ----------------------------------------------------------------------------
 
+    def get_Avogadro(self):
+        """
+          method get Avogadro value 
+           
+       """
+
+        return self.__N_avo
+# ----------------------------------------------------------------------------
+    def get_hc(self):
+        """
+        method get Planck constant X Light speed value
+        """
+        return self.__hc
+    
+    # ----------------------------------------------------------------------------
+    def get_henke(self):
+        """
+            method get  constant for Henke calculations
+        """
+        return self.__C_henke
+# ----------------------------------------------------------------------------
+
     def index_of(self, arrval, value):
-        """Return index of array *at or below* value."""
+        """
+           Method that Returns the index of an array *at or below* value.
+        
+         Args:
+              arrval (numpy array): 
+              value (float): chosen value 
+
+           Returns:
+              index of array *at or below* value
+         
+         
+         """
+      
 
         
         if value < min(arrval):
@@ -145,6 +123,19 @@ class utilities():
 # ----------------------------------------------------------------------------
 
     def plotty(self, x, y, name, color='blue', scale='linear', ylabel="IMFP ($\AA$)",save=True):
+        """
+          General method for plotting 
+           Args:
+              x (float): abscissa
+              y (float): ordinate 
+              color (string): color of line 
+              scale (string):  linear, semilog, loglog
+              ylabel (string): label for ordinate
+              save (boolean): true if file .dat saved
+
+           Returns:
+              plot and file .dat
+       """
         if (scale == 'loglog'):
 
             plt.loglog(x, y, color=color)
@@ -166,12 +157,27 @@ class utilities():
 # -----------------------------------------
 # ----------------------------------------- 
     def taking_initialguess(self,xData,yData,height,Guessing):
+        """
+        Method for the determination of the initial guess for the lmfit (Lorentzian) parameter
+        
+          Args:
+             xData (float): energy (eV)
+             yData (float): ELF
+             height (float): height sensitivity to individuate peaks
+             Guessing (boolean): True lmfit find_peaks looks for parameter peaks, False it takes the parameter from file peaks.dat
+
+          Returns:
+             peas (integer): position in the ELF file
+             rough_peak_positions (float) : guessed peak position
+             Amp (float) : guessed peak heights
+             gamm (float): guessed peak widths
+      """
         
         guess=[]
         Amp =[]
         gamma =[]
         Inte = []
-       
+        print (Guessing)
         if (Guessing==True):
             print ("Looking for the peaks")
             peaks, properties = find_peaks( yData,width=0.000000001,height=height)
@@ -234,6 +240,16 @@ class utilities():
 # -----------------------------------------
 
     def taking_data(self, filename):
+        """
+         Method for storing abscissa and ordinate in two lists
+         
+           Args:
+              filename (string): file 
+
+           Returns:
+              Xeas (list)
+              Yeas  (list)
+       """
         Xeas = []
         Yeas = []
         values = []
@@ -253,6 +269,16 @@ class utilities():
 # -------------------------------------------------------------------------
 
     def Integration(self, omega, imels):
+        """
+         Method for ELF integration 
+         
+           Args:
+              filename (string): file 
+
+           Returns:
+              Xeas (list)
+              Yeas  (list)
+       """
 
         da_integrare = []
 
@@ -264,6 +290,17 @@ class utilities():
 # --------------------------------------------
 
     def plot_data2(self, Ysym_data, Yasym_data, X_data, save):
+        """
+          General method for plotting three columns
+           Args:
+              Ysym_data  (float): First ordinate 
+              Yasym_data (float): Second ordinate 
+              X_data     (float): abscissa
+              
+              save (boolean): true if file .dat saved
+
+         
+       """
 
         plt.figure(figsize=(8, 6))
         plt.plot(X_data, Ysym_data, linestyle='solid', marker='o', label='Z')
@@ -284,6 +321,15 @@ class utilities():
 
 
     def save_pinel(self, x, y, name):
+        """
+          method for saving Cumulative Probabilities files with name (two columns)
+           Args:
+              x  (float):  abscissa
+              y (float):   ordinate
+              name (string): Name of saved file
+              
+         
+       """
 
         output = '\n'.join('\t'.join(map(str, row)) for row in zip(x, y))
 
@@ -294,6 +340,15 @@ class utilities():
         f.close()
 # --------------------------------------------
     def save_all(self, x, y, name):
+        """
+          method for saving files with name (two columns)
+           Args:
+              x  (float):  abscissa
+              y (float):   ordinate
+              name (string): Name of saved file
+              
+         
+       """
 
         output = '\n'.join('\t'.join(map(str, row)) for row in zip(x, y))
 
@@ -305,6 +360,15 @@ class utilities():
 # --------------------------------------------
 
     def save_all2(self, x, y1, y2, name):
+        """
+         method for saving files with name (three columns)
+          Args:
+             x  (float):  abscissa
+             y1 (float):  first ordinate
+             y2 (float):  second ordinate
+             name (string): Name of saved file           
+        
+      """
 
         output = '\n'.join('\t'.join(map(str, row)) for row in zip(x, y1, y2))
 
@@ -317,18 +381,36 @@ class utilities():
 # hc=12398.5[eV*Angs] E=hc/lambda
 
     def eV2cm(self, omg):
+        
+        """
+          method transforming eV to cm-1
+          
+          Args:
+           omg (float): frequency (eV)
+           
+          Returns:
+              rho_np (float)= frequency (cm-1)
+       """
 
         # rho=[]
 
         # rho.append(self.hc/omg[i])
         omg_np = self.From_str2float(omg)
         rho_np = np.reciprocal(omg_np)
-        rho_np = self.hc*rho_np
+        rho_np = self.get_hc()*rho_np
 
         return(rho_np)
 # --------------------------------------------
 
     def is_number(self, s):
+        """
+          method to detect if the variable is a number
+          Args:
+           omg (float): frequency (eV)
+           
+          Returns:
+              rho_np (float)= frequency (cm-1)
+       """
 
         ret = True
         try:
@@ -340,6 +422,15 @@ class utilities():
         return ret
 # -------------------------------------------
     def Polynomial(self, x, coeff):
+        """
+          method to Reconstruct Lmfit Polynomial function
+          Args:
+           x (float):  x-value
+           coeff (list): list of coefficients
+           
+          Returns:
+              y (float)= Polynomial y value
+       """
 
         y = 0
 
@@ -349,6 +440,18 @@ class utilities():
 
 # ---------------------------------------------------    
     def lorentzian(self, x, a, x0, gam):
+        
+        """
+          method to Reconstruct Lmfit Lorentzian function
+          Args:
+           x  (float):  x-value
+           a  (float):  Amplitude
+           x0  (float): Position
+           gam (float): width
+           
+          Returns:
+              y (float)= Lorentzian y value
+       """
        # print (str(a) +" "+str(x0) +" "+str(gam) +" ")
 
         return a * gam/math.pi / ((gam)**2 + (x - x0)**2)
@@ -357,6 +460,16 @@ class utilities():
 # ---------------------------------------------------
     def Power_law(self,x, par):
         
+        """
+          method to Reconstruct Lmfit Power law function
+          Args:
+           x  (float):  x-value
+           par (list):  list of coefficients
+           
+           
+          Returns:
+              y (float)= Lorentzian y value
+       """
         y =par[0]*x**par[1] 
 
         return y
@@ -364,12 +477,25 @@ class utilities():
 # ---------------------------------------------------
     def Power_law_h(self,x, x_in,x_fin,Ampl,coeff):
         
+        ## not used 
         y =np.heaviside(x-x_in, 0.5)*np.heaviside(x_fin-x, 0.5)*Ampl*x**coeff 
 
         return y      
-####------------------------------------------------------------------
+#------------------------------------------------------------------
 
     def Mau_Lorentizian_h(self, x, x0, a, gam, gam_r):
+        """
+          method to Reconstruct Asymmetric Lorentzian
+          Args:
+           x  (float):  x-value
+           a  (float):  Amplitude
+           x0  (float): Position
+           gam (float): width
+           gam_r (float): asymmetric width 
+           
+          Returns:
+              y (float)= Lorentzian y value
+       """ 
         Const = 2*a/(gam+gam_r)
 
         f_lor_h = Const*gam*x*np.heaviside( x-x0,0.5) / ((gam*x)**2 + (x**2 - x0**2)**2) +\
@@ -377,11 +503,22 @@ class utilities():
             ((gam_r*x)**2 + (x**2 - x0**2)**2)
 
         return f_lor_h
-##############################################################
+# ---------------------------------------------------
 
     def Mau_Lorentizian(self, x, mu, a, gam):
+        """
+          method to Reconstruct Asymmetric Lorentzian
+          Args:
+           x  (float):  x-value
+           mu (float): Position
+           a  (float):  Amplitude
+           gam (float): width
+                   
+          Returns:
+              y (float)= Lorentzian y value
+       """ 
         return a * gam*x / ((gam*x)**2 + (x**2 - mu**2)**2)
-##############################################################
+# ---------------------------------------------------
 
     def Mau_Lorentizian_F(self, x, mu, a, gam,B):
          
@@ -391,16 +528,28 @@ class utilities():
         y =  a * gam*x / ((gam*x)**2 + (x**2 - mu**2)**2)
         #y*np.heaviside(mu-x, 0.5)
         return y*F
-##############################################################
-
+# ---------------------------------------------------
     def Fano_function(self, x,amplitude,center, sigma,q):
+        """
+          method to Reconstruct Lmfit Fano function
+          
+          Args:
+           x  (float):  x-value
+           center (float):  position
+           sigma (float):   width
+           q (float):    q asymmetric parameter
+           
+          Returns:
+              y (float)= Fano function y value
+       """
 
         f = amplitude*(q*sigma/2 + x - center)**2/((sigma/2)**2+(x-center)**2)
 
         return f
-#############################################################
+# ---------------------------------------------------
 
     def Fano_Mau(self, x,amplitude,center, sigma,q,alpha):
+        
         #alpha =0
         if (alpha == 1):
             beta = 2
@@ -410,7 +559,7 @@ class utilities():
         f = amplitude*(q*sigma*x/2 +alpha*(x - center))**beta/((sigma*x/2)**2+(x-center)**2)
 
         return f
-##############################################################
+# ---------------------------------------------------
 
     def lognormal_function(self, x, A, mu, sigma):
 
@@ -418,16 +567,39 @@ class utilities():
             math.exp((-1.0/(2*sigma**2))*(math.log(x) - mu)**2)
 
         return f
-##############################################################
 # ---------------------------------------------------
 
     def quadratic(self, x, a, b, c):
+        """
+          method to Reconstruct quadratic lmfit function
+          Args:
+           x  (float):  x-value
+           a (float):  x^2 coefficient
+           b  (float):  x coefficient
+           c (float): Constant
+                   
+           
+          Returns:
+              y (float)= quadratic y value
+       """
         return a*x**2 + b*x + c
-##############################################################
 # -------------------------------------------
 
     def multi_lorentz(self, x, par_q, par_pl, par_l, par_f, approx):
-
+        """
+          method to sum the Lorentzians functions
+          Args:
+           x  (float):  x-value
+           par_q (list): parameters for quadratic function
+           par_pl  (list):parameters for polynomial function (not used)
+           par_l (list): parameters for Lorentzians
+           par_f (list): parameters for several different functions (Fermi_lorentzian, Fano, LogNormal)
+           approx (string): approximation ("Fermi_lorentz", "Fano", "LN")
+           
+           
+          Returns:
+              y (float)= reconstructed spectrum
+       """
         off = self.quadratic(x, par_q[0], par_q[1], par_q[2])
  
         
@@ -465,6 +637,16 @@ class utilities():
         return multi_l
 # -------------------------------------------   
     def powerlaw_fermi(self, x, par_pl, par_f):
+       """
+          method to sum the fermi_lorentz with lmfit powerlaw function
+          Args:
+           x  (float):  x-value  
+           par_pl  (list): powerlaw  parameters
+           par_f (list): Fermi_lorentzian parameters
+
+          Returns:
+              y (float)= quadratic y value
+       """
 
        off = self.Power_law(x, par_pl)
   
@@ -477,7 +659,17 @@ class utilities():
        return multi_pf
 # -------------------------------------------   
     def powerlaw_lorentz(self, x, par_pl, par_f):
+       """
+          method to sum the lorentzian with lmfit powerlaw function
+          Args:
+           x  (float):  x-value  
+           par_pl  (list): powerlaw  parameters
+           par_f (list): lorentzian parameters
 
+          Returns:
+              y (float)= quadratic y value
+       """
+        
        off = self.Power_law(x, par_pl)
   
 
@@ -489,7 +681,16 @@ class utilities():
        return multi_pf
  # -------------------------------------------   
     def powerlaw_fano(self, x, par_pl, par_f):
+        """
+          method to sum the Fano with lmfit powerlaw function
+          Args:
+           x  (float):  x-value  
+           par_pl  (list): powerlaw  parameters
+           par_f (list): Fano parameters
 
+          Returns:
+              y (float)= quadratic y value
+       """
         off = self.Power_law(x, par_pl)
    
 
@@ -502,6 +703,16 @@ class utilities():
         return multi_pf
 # -------------------------------------------   
     def powerlaw_ln(self, x, par_pl, par_f):
+       """
+          method to sum the lognorm with lmfit powerlaw function
+          Args:
+           x  (float):  x-value  
+           par_pl  (list): powerlaw  parameters
+           par_f (list): lognorm parameters
+
+          Returns:
+              y (float)= quadratic y value
+       """
 
        off = self.Power_law(x, par_pl)
   
@@ -539,12 +750,23 @@ class utilities():
 # -----------------------------------------
 
     def reading_inputfile(self):
+        ##not used
+        
 
         name_of_script = sys.argv[1]
         return name_of_script
 # -----------------------------------------
 
     def From_str2float(self, str):
+        """
+           method transforms string to floats
+           Args:
+            str  (string):  string to transform
+
+           Returns:
+               rv (float)= float value
+        """
+        
         rvect_f = []
         for item in str:
             rvect_f.append(float(item))
@@ -554,6 +776,14 @@ class utilities():
 # -----------------------------------------
 
     def From_str2Integer(self, str):
+        """
+           method transforms string to integer
+           Args:
+            str  (string):  string to transform
+
+           Returns:
+               rv (float)= integer value
+        """
         rvect_f = []
         for item in str:
             rvect_f.append(int(item))
@@ -563,14 +793,23 @@ class utilities():
 # ----------------------------------------
 
     def letsstart(self):
+        """
+           method let's start
+    """
         print("Festina lente.\n", flush=True)
 # ----------------------------------------
 
     def sutor(self):
+        """
+           method It is over
+    """
         print("Sutor ne ultra crepidam.", flush=True)
 # ----------------------------------------
 
     def sutor_issue(self, cissue):
+        """
+           method to show an error
+    """
         print(cissue, flush=True)
         print("Morituro te salutat", flush=True)
         sys.exit("failure")

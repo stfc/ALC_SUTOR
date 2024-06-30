@@ -1,74 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Jul 26 11:42:14 2023
-Sutor Project 
-Main for the fitting procedure with Lorentians
 
-BSD 3-Clause License
-
- 
-
-Copyright (c) 2024, Ada Lovelace Centre, Science and Technology Facilities Council, part of the UKRI (UK).
-
-Author:             Paolo Emilio Trevisanutto.
-
- 
-
-All rights reserved.
-
- 
-
-Redistribution and use in source and binary forms, with or without
-
-modification, are permitted provided that the following conditions are met:
-
- 
-
-1. Redistributions of source code must retain the above copyright notice, this
-
-   list of conditions and the following disclaimer.
-
- 
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-
-   this list of conditions and the following disclaimer in the documentation
-
-   and/or other materials provided with the distribution.
-
- 
-
-3. Neither the name of the copyright holder nor the names of its
-
-   contributors may be used to endorse or promote products derived from
-
-   this software without specific prior written permission.
-
- 
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-
-"""
 import classutility as cu
 import class_fit_spectrum_w_lorentzians as fit
 from sys import argv
@@ -84,9 +15,17 @@ import numpy as np
 ##main ##main ##main ##main ##main ##main ##main
 
 ###########---------------------------------------------------
+"""
+Created on Wed Jul 26 11:42:14 2023
+ALC_Sutor Project 
+Main for the fitting procedure with Lorentians
 
+Author: P.E. Trevisanutto
+
+
+"""
 PLOTTING = True
-Guessing = True
+Guessing = False
 
 Xeas = []
 Yeas = []
@@ -102,10 +41,10 @@ guess =[]
 #File_parameter='parameter.dat'
 generalWidth = 1
 
-cutoff1 =1.9*10**3
-cutoff2 = 1.95*10**3
+cutoff1 =1.0*10**4
+cutoff2 = 1*10**5
 #cutoff2 = 4.0*10**5
-cutoff3 = 2.0*10**3
+cutoff3 = 4.0*10**5
 Sep_value=100
 offyougo=1
 
@@ -141,10 +80,6 @@ elif(len(argv) == 5):
     Guessing = argv[4]
     
 elif(len(argv) == 7):
-    filename =argv[1]
-    cApprox = argv[2]
-    height = float(argv[3])
-    Guessing = argv[4]
     Sep_value=argv[5]
     cutoff1=argv[6]
     cutoff2=argv[7]
@@ -217,7 +152,7 @@ params.update( gmodel.guess(yData[:ix1], x=xData[:ix1]))
 
 
 
-exp1= PowerLawModel(prefix='pow2_')
+exp1= PowerLawModel(prefix='pow3_')
 par_exp= exp1.make_params()
 
 par_exp.update(exp1.guess(yData[ix1:ix2], xData[ix1:ix2]))

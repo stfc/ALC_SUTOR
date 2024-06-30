@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 
-Sutor Project
+ALC Sutor Project
 Main for the Nist-ELF
 
-Authors: PE Trevisanutto, G. Teobaldi.
+Authors: PE Trevisanutto.
 """
 import classutility as cu
 import class_nist as Nist

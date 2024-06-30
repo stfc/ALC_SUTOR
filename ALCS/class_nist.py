@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-
+class Nist_interpolation.
 Class for interpreting the Nist f1 and f2 files to calculate the ELF after 100 eV.
+Created on Fri Jul 21 11:32:35 2023
+ALC Sutor Project
 
-P. E. Trevisanutto, G. Teobaldi STFC-UKRI
+
 """
 
 import matplotlib.pyplot as plt
@@ -33,6 +35,13 @@ class Nist_interpolation():
         self.ut = utilities
 ####--------------------------------------------    
     def reading_input(self):
+        """
+       
+
+        Method to read the input file
+           
+        
+    """
 
         atom =[]
         N_atom = []
@@ -96,6 +105,15 @@ class Nist_interpolation():
             
 ####--------------------------------------------    
     def Interpolating_Nist(self,filename):
+        """
+           Method that interpolates the form factors f1 or f2 and plots the results
+        
+         Args:
+             filename (string): name of the Nist file
+             
+         
+         
+         """
         om=[]
         f1=[] 
         f2=[]
@@ -144,6 +162,19 @@ class Nist_interpolation():
         f.close()
 #=====================================================
     def Get_Core_elfi_Nist(self,file):
+        """
+           Method that interpolates the form factors f1 or f2 and plots the results
+        
+         Args:
+             file (string): name of the Nist file
+              
+
+           Returns:
+              omega (float): energy (eV)
+              f1 (float): f1
+         
+         
+         """
         omega =[]
         f1 = []
 #        f2 =[]
@@ -325,6 +356,18 @@ class Nist_interpolation():
         return elf_final
 ####--------------------------------------------
     def calc_ELF_compound_Nist(self):
+            """
+              Method for the ELF spectrum generation from the Nist f1 and f2 form factors
+        
+         
+              
+
+           Returns:
+              om (float): omega frequency (eV)
+              ELF (float): ELF values
+         
+         
+         """
            
             N_species, atom, Number_in_cell, N_atom, dens, files=self.reading_input()
             

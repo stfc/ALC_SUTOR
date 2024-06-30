@@ -80,12 +80,12 @@ import class_IMFP as impf
 #-----------------------------------------------------
 EF=0
 #Band gap (eV)
-Eb=0
+Eb = 2.01 
 Tmin=10
-Tmax =2*10**3
-cutoff1 = 1.5*10**3
+Tmax =4*10**5
+cutoff1 = 0.45*10**4
 #cutoff1 = 1*10**4
-cutoff2 = 2*10**3
+cutoff2 = 0.9*10**5
 
 
 Integral_tot = 0.0
@@ -133,7 +133,7 @@ W = imfp_cl.get_Wmin()
 ##ora modificare qui.
 print(f"{Fore.YELLOW}Inelastic mean free path\n",flush=True)
 
-imfp_cl.inel_mean_free_path(par_q,par_p,par_l,par_f1, par_pl2, par_f2,par_pl3,par_f3, Approximation)
+#imfp_cl.inel_mean_free_path(par_q,par_p,par_l,par_f1, par_pl2, par_f2,par_pl3,par_f3, Approximation)
 
 print (imfp_cl.get_Wmin())
 list_of_T_energies= imfp_cl.generate_array(Tmin, Tmax)
@@ -169,7 +169,7 @@ for T in list_of_T_energies:
           
           Integral_step = imfp_cl.integral_step (imfp_cl.get_Wmin(),W, T, par_q,par_p,par_l,par_f1, par_pl2, par_f2,par_pl3, par_f3, Approximation)
        
-          Integral_tot = Integral_tot + abs(Integral_step)
+          Integral_tot = Integral_tot + Integral_step
         
           ComuProb.append(Integral_tot)
           

@@ -2,7 +2,7 @@
 """
 Created on Tue May 30 11:07:59 2023
 
-Sutor Project
+ALC_Sutor Project
 Class for calculations of Inelastic Mean Free Path and Comulative Probabilities for the IMFP 
 at different initial kinetic energies.
 
@@ -122,22 +122,63 @@ class class_imfp():
         self.myut      = cu
         self.cutoff1   = cutoff1
         self.cutoff2   = cutoff2
-        self.__Wmin    = self.__Eb
-        #self.__Wmin    = round(self.__Eb,self.__digit)
+        self.__Wmin    = round(self.__Eb,self.__digit)
         
 ####--------------------------------------------
-####--------------------------------------------
-    def set_approx(self,appr):
-        self.__cApprox=appr
-###----------
 
+    def set_approx(self,appr):
+        """
+       Method that sets the approximation
+        
+       Args:
+           approx (String): Chosen Approximation 
+       Returns:
+           __cApprox (string): Approximation e.g. Lorentz, Fano, LN
+    
+     """
+        self.__cApprox=appr
+###----------------------------------------------
     def get_Wmin(self):
+        """
+           Method to retrieve the W energy minimum
+           
+           Returns:
+               __Wmin (float): energy minimum
+         
+         """
         return self.__Wmin
 ####--------------------------------------------
     def get_digit(self):
+        """
+           Method to retrieve the digit
+           
+           
+           
+           Returns:
+               __digit (integer): Default digit
+         """
         return self.__digit
 ####--------------------------------------------
     def generate_array(self,W_min, W_max, step1 =5, step2=10,step3=10**2,step4=10**3,step5=10**4):
+        
+        """
+           Method to sample a list of energy value to be used to calculate the Cumulative Probabilities
+           
+           Args:
+               W_min (float): minimum energy (eV)
+               W_max (float): maximum energy (eV)
+               step1 (float): First step value (eV)
+               step2 (float): second step value (eV)
+               step3 (float): third step value (eV)
+               step4 (float): Fourth step value (eV)
+               step5 (float):Fift step value (eV)
+           
+           Returns:
+               list_w (list): list of selected energies
+         
+         """
+         
+         
         list_w= []
         
         W_st1=100
@@ -147,8 +188,7 @@ class class_imfp():
         
         
         W=W_min
-        print (step1)
-        print (step2)
+    
    
     
         while W<W_max:
@@ -182,6 +222,16 @@ class class_imfp():
         return list_w
 ######-------------------------------------------
     def reading_background(self):
+        
+        """
+           Method to read the background parameters (quadratic, polynomial or Power law)
+           
+           
+           Returns:
+               counter (float):number of the involved parameters
+         
+         """
+        
         try:
             ##Reading power law1
             for line in open(self.__File_powerlaw1 , mode='r'):
@@ -217,7 +267,7 @@ class class_imfp():
             #print ("Polynomial: "+str(len(self.__params_p))+"\n")
             ##Reading Lorentzian
             for line in open(self.__File_lorentzian, mode='r'):
-              ##until omega<co1
+        
                 for s in line.split():
                     self.__params_l.append(float(s))
     
@@ -231,6 +281,13 @@ class class_imfp():
         return counter
 ######-------------------------------------------
     def reading_first_sector(self):
+        """
+           Method to read the parameters in the first sector
+           
+           Returns:
+               counter (float):number of the involved parameters
+         
+         """
         
         if (os.path.exists(self.__File_fermi1)):
             
@@ -283,14 +340,21 @@ class class_imfp():
            print ("Sector 1: Lorentzian "+str(len(self.__params_Nist1))+"\n")
  
         
-        #else:
-        #   print ("Not found parameters for Nist ELF first sector\n")            
+        else:
+           print ("Not found parameters for Nist ELF first sector\n")            
             
         counter = len(self.__params_Nist1)       
             
         return counter
 ########------------------------------------------------------------------------------------        
     def reading_second_sector(self):
+            """
+               Method to read the parameters in the second sector
+               
+               Returns:
+                   counter (float):number of the involved parameters
+             
+             """
             
             if (os.path.exists(self.__File_fermi2)):
                 
@@ -350,7 +414,13 @@ class class_imfp():
             return counter
 ########------------------------------------------------------------------------------------        
     def reading_third_sector(self):
-            
+            """
+               Method to read the parameters in the third sector
+               
+               Returns:
+                   counter (float):number of the involved parameters
+             
+             """
         
             counter = 0
             if (os.path.exists(self.__File_fermi3)):
@@ -395,7 +465,25 @@ class class_imfp():
             return counter
 #########################---------------------------------
     def reading_parameters(self,filename):
-        
+        """
+           Method to read the parameters for the lmft
+           
+           Args:
+               filename (string): imported file
+           
+           Returns:
+               self.__params_q (list): list of parameters for lmfit quadratic function
+               self.__params_p (list): list of parameters for lmfit polynomial function
+               self.__params_l(list): list of parameters for lmfit lorentz function
+               self.__params_Nist1 (list):list of parameters for lmfit Lorentz (Fano, lognorm) function in the Nist region sector 1
+               self.__params_pl1 (list):list of parameters for lmfit power law function in the Nist region sector 1
+               self.__params_Nist2 (list):list of parameters for lmfit Lorentz (Fano, lognorm) function in the Nist region sector 2
+               elf.__params_pl2 (list): list of parameters for lmfit power law function in the Nist region sector 2
+               self.__params_Nist3 (list):list of parameters for lmfit Lorentz (Fano, lognorm) function in the Nist region sector 1
+               final_elf (array): Reconstructed ELF
+               self.__cApprox (string): Approximation (Lorentz, Fano, LN) for Nist range of energy
+         
+         """
         
         
         counter = self.reading_background()
@@ -419,6 +507,14 @@ class class_imfp():
 
 #########################---------------------------------
     def Plotting_analytical_vs_numerical(self,filename):
+        """
+           Method that plots the converged reconstructed ELF vs TD-DFT+Nist ELF
+           
+           Args:
+               filename (string): imported ELF file
+           
+         
+         """
         final_elf= []
         
         for line in open(filename, mode='r'):
@@ -490,6 +586,17 @@ class class_imfp():
          
 #####----------------------------------------------------------------------------
     def evolution_Lor(self,q,par_f):
+        """
+           Method to extend the Lorentzians created with lmfit model to the finite k-momentum following the Drude-Lorentz dispersion law.
+           
+           Args:
+               q (float): k momentum value
+               par_f(list): list of parameters for the Lorentzian peak
+           
+           Returns:
+              parati_l (list): list of parameter extended with k momentum
+         
+         """
         
         parati_l=[]
         
@@ -502,9 +609,8 @@ class class_imfp():
             if (omega > 0):  
                 omega = (omega**2+ 12*self.__EF*q**2/10 + (0.5*q**2)**2)**(0.5)
                 gam = (gam**2 + q**2/2 + q**4/4)**(0.5)
-            else:
-                omega = omega
-                gam = gam
+            #else:
+            #    omega = - (omega**2+ 12*self.__EF*q**2/10 + (0.5*q**2)**2)**(0.5)
             
            #if (gam>0):
             #    gam = (gam**2 + q**2/2 + q**4/4)**(0.5)
@@ -518,6 +624,17 @@ class class_imfp():
         return parati_l
 #####----------------------------------------------------------------------------
     def evolution_Maur(self,q,par_f):
+        """
+           Method to extend the lmfit Lorentzians to the finite k-momentum following the Drude-Lorentz dispersion law.
+           
+           Args:
+               q (float): k momentum value
+               par_f(list): list of parameters for the Lorentzian peak
+           
+           Returns:
+              parati_l (list): list of parameter extended with k momentum
+         
+         """
         parati_h = []
         
         for i in range (0, len( par_f), 4):  
@@ -529,7 +646,7 @@ class class_imfp():
             if (omega_h > 0):   
                 omega_h = (omega_h**2+ 12*self.__EF*q**2/10 + (0.5*q**2)**2)**(0.5)
             else:
-                omega_h = (omega_h**2+ 12*self.__EF*q**2/10 + (0.5*q**2)**2)**(0.5)
+                omega_h = -(omega_h**2+ 12*self.__EF*q**2/10 + (0.5*q**2)**2)**(0.5)
         
             gam_h   = (gam_h**2 + q**2/2 + q**4/4)**(0.5)
             gam_r = (gam_r**2 + q**2/2 + q**4/4)**(0.5)
@@ -542,6 +659,17 @@ class class_imfp():
         return parati_h
 #####----------------------------------------------------------------------------
     def evolution_Maur_F(self,q,par_f):
+        """
+           Method to extend the lmfit Lorentzians with Fermi distributionto the finite k-momentum following the Drude-Lorentz dispersion law.
+           
+           Args:
+               q (float): k momentum value
+               par_f(list): list of parameters for the Lorentzian peak
+           
+           Returns:
+              parati_l (list): list of parameter extended with k momentum
+         
+         """
         parati_h = []
         
         for i in range (0, len( par_f), 4):  
@@ -567,6 +695,17 @@ class class_imfp():
         return parati_h
 #####----------------------------------------------------------------------------
     def evolution_Fano(self,q,par_f):
+        """
+           Method to extend the lmfit Fano function to the finite k-momentum following the Drude-Lorentz dispersion law.
+           
+           Args:
+               q (float): k momentum value
+               par_f(list): list of parameters for the Fano peak
+           
+           Returns:
+              parati_l (list): list of parameter extended with k momentum
+         
+         """
         parati_h = []
         
         
@@ -596,6 +735,17 @@ class class_imfp():
         return parati_h
 #####----------------------------------------------------------------------------
     def evolution_LogNorm(self,q,par_f):
+        """
+           Method to extend the lmfit Log Norm function to the finite k-momentum following the Drude-Lorentz dispersion law.
+           
+           Args:
+               q (float): k momentum value
+               par_f(list): list of parameters for the LogNorm peak
+           
+           Returns:
+              parati_l (list): list of parameter extended with k momentum
+         
+         """
         
         parati_h = []
         
@@ -697,6 +847,27 @@ class class_imfp():
 ###-------------------------------------------------------------------------
     
     def integrand1 (self,kappa, E,T, par_q,par_p,par_l,par_f,par_pl1,par_f1,par_pl2, par_f2,Approximation):
+        """
+           Method to create the cross section integrand
+           
+           Args:
+               k (float): k momentum value
+               E (float): frequency to integrate (eV)
+               T (float): Initial electron kinetic energy (eV)
+               par_q (list):parameters for the quadratic lmfit function
+               par_p (list): parameters for the polynomial lmfit function
+               par_l (list): parameters for the lorentzian function
+               par_f (list): parameters for the Fermi-lorentzian function
+               par_pl1 (list): parameters for the power law lmfit function in section 1
+               par_f1 (list):  parameters for the Fermi lorentizian lmfit function in section 1
+               par_pl2 (list): parameters for the power law lmfit function in section 2
+               par_f2 (list): parameters for the Fermi lorentizian lmfit function in section 1
+               Approximation (string): Approximation for the Nist tail
+           
+           Returns:
+             y (float): cross section for given value
+         
+         """
     
         parati_l=[]
     
@@ -810,9 +981,29 @@ class class_imfp():
 #-----------------------------------------------------
     
     def diimfp1(self,Emin,Emax,T, par_q,par_p,par_l,par_f,par_pl1,par_f1,par_pl2,par_f2 ,Approximation): 
-    
+        """
+           Method that integrates the differential cross section
+           
+           Args:
+               k (float): k momentum value
+               E (float): frequency to integrate (eV)
+               T (float): Initial electron kinetic energy (eV)
+               par_q (list):parameters for the quadratic lmfit function
+               par_p (list): parameters for the polynomial lmfit function
+               par_l (list): parameters for the lorentzian function
+               par_f (list): parameters for the Fermi-lorentzian function
+               par_pl1 (list): parameters for the power law lmfit function in section 1
+               par_f1 (list):  parameters for the Fermi lorentizian lmfit function in section 1
+               par_pl2 (list): parameters for the power law lmfit function in section 2
+               par_f2 (list): parameters for the Fermi lorentizian lmfit function in section 2
+               Approximation (string): Approximation for the Nist tail
+           
+           Returns:
+             y (float): cross section for given value
+         
+         """
             
-        if Emax < self.get_Wmin():
+        if Emax < self.__Wmin:
             result = 0
         else:
                 
@@ -827,15 +1018,32 @@ class class_imfp():
 ##====================================================
 
     def inel_mean_free_path(self,par_q,par_p,par_l,par_f1, par_pl2, par_f2,par_pl3,par_f3,cApprox):
-    
+        """
+           Method that calculates the inelastic mean free path.
+           
+           Args:
+     
+               par_q (list):parameters for the quadratic lmfit function
+               par_p (list): parameters for the polynomial lmfit function
+               par_l (list): parameters for the lorentzian function
+               par_f (list): parameters for the Fermi-lorentzian function
+               par_pl1 (list): parameters for the power law lmfit function in section 1
+               par_f1 (list):  parameters for the Fermi lorentizian lmfit function in section 1
+               par_pl2 (list): parameters for the power law lmfit function in section 2
+               par_f2 (list): parameters for the Fermi lorentizian lmfit function in section 2
+               par_pl3 (list): parameters for the power law lmfit function in section 3
+               par_f3 (list): parameters for the Fermi lorentizian lmfit function in section 3
+               Approximation (string): Approximation for the Nist tail
+                    
+         """
     
     
         imfp_integral=[]
-        T_variation_list = self.generate_array(self.__Wmin, self.__Tmax,step1 =3, step2=5)
+        T_variation_list = self.generate_array(self.__Wmin, self.__Tmax,step1=5)
         
     
-        #for T in tqdm(T_variation_list):
-        for T in (T_variation_list):   
+        for T in tqdm(T_variation_list):
+        #print (T)
             if ((T+self.__Eb)/2 > T-self.__EF):
             
                     Wmax=T-self.__EF 
@@ -845,14 +1053,11 @@ class class_imfp():
                     Wmax=(T+self.__Eb)/2
                 
             Wmax= round(Wmax,self.__digit)
-            print (self.get_Wmin())
-            print ("Wmax")
-            print (Wmax)
-           
-            Integral_tot =self.diimfp1( self.get_Wmin(), Wmax, T, par_q,par_p,par_l,par_f1, par_pl2, par_f2,par_pl3,par_f3,cApprox)
-           
-            print (Integral_tot)
-            imfp_integral.append((1/(self.__N_mix*Integral_tot)))
+        
+            
+            Integral_tot =self.diimfp1(self.__Wmin,Wmax, T, par_q,par_p,par_l,par_f1, par_pl2, par_f2,par_pl3,par_f3,cApprox)
+                
+            imfp_integral.append(1/(self.__N_mix*Integral_tot))
         
         imfp_np =np.asarray(imfp_integral)
         
@@ -862,11 +1067,33 @@ class class_imfp():
         i = np.argmin(imfp_np)
         print ('Minimum Kinetic energy: ' + str(T_variation_list[i])+" eV \n")
     
-        self.myut.save_all(T_variation_list, imfp_integral, "IMFP")
+        self.myut.save_all(T_variation_list, imfp_integral, "IMFP.dat")
         self.myut.plotty(T_variation_list,imfp_integral, "Inelastic Mean Free Path",scale='loglog')
 ##====================================================
     def integral_step (self,W_in,Wmax, T,par_q,par_p,par_l,par_f1, par_pl2, par_f2,par_pl3, par_f3,cApprox):
-
+        """
+           Method that integrates for a given initial T the Cumulative probabilities.
+           
+           Args:
+     
+               W_min (float): Minimum energy in the integration
+               W_max (float): Maximum energy in the integration
+               T (float): Initial electronic kinetic energy
+               par_q (list):parameters for the quadratic lmfit function
+               par_p (list): parameters for the polynomial lmfit function
+               par_l (list): parameters for the lorentzian function
+               par_f (list): parameters for the Fermi-lorentzian function
+               par_pl1 (list): parameters for the power law lmfit function in section 1
+               par_f1 (list):  parameters for the Fermi lorentizian lmfit function in section 1
+               par_pl2 (list): parameters for the power law lmfit function in section 2
+               par_f2 (list): parameters for the Fermi lorentizian lmfit function in section 2
+               par_pl3 (list): parameters for the power law lmfit function in section 3
+               par_f3 (list): parameters for the Fermi lorentizian lmfit function in section 3
+               Approximation (string): Approximation for the Nist tail
+                    
+          Results:
+              Integral_tot (float): Results of the integration
+         """
 
         Integral_tot =self.diimfp1(self.__Wmin,Wmax, T, par_q,par_p,par_l,par_f1, par_pl2, par_f2,par_pl3,par_f3,cApprox)
                 
